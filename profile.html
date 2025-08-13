@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile | HeartGuard</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #ff6b81;
+            --dark: #2f3542;
+            --light: #f1f2f6;
+            --success: #2ed573;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .logo h1 {
+            color: var(--dark);
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            object-fit: cover;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .profile-header {
+            background: linear-gradient(to right, #ff4757, #ff6b81);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-header p {
+            opacity: 0.9;
+        }
+        
+        .profile-content {
+            padding: 2rem;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #dfe4ea;
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            z-index: 2;
+            transition: width 0.3s ease;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #dfe4ea;
+            color: #57606f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        
+        .step-text {
+            font-size: 0.9rem;
+            color: #a4b0be;
+            font-weight: 500;
+        }
+        
+        .step.active .step-text {
+            color: var(--dark);
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #dfe4ea;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .bmi-calculator {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .bmi-result {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .bmi-normal {
+            background: #e0f7e9;
+            color: var(--success);
+        }
+        
+        .bmi-warning {
+            background: #fff4e5;
+            color: #ffa502;
+        }
+        
+        .bmi-danger {
+            background: #ffebee;
+            color: var(--primary);
+        }
+        
+        .image-upload {
+            border: 2px dashed #dfe4ea;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload:hover {
+            border-color: var(--primary);
+        }
+        
+        .image-upload i {
+            font-size: 2rem;
+            color: #a4b0be;
+            margin-bottom: 1rem;
+        }
+        
+        .image-upload p {
+            color: #57606f;
+        }
+        
+        .image-preview {
+            display: none;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .profile-complete {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .profile-complete i {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-complete h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .profile-complete p {
+            color: #57606f;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <h1>Heart<span>Guard</span></h1>
+        </div>
+        <div class="user-menu">
+            <img src="https://ui-avatars.com/api/?name=New+User&background=ff4757&color=fff" alt="User">
+            <span>New User</span>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <h2>Create Your Health Profile</h2>
+                <p>Complete your profile to get accurate heart attack risk prediction</p>
+            </div>
+            
+            <div class="profile-content">
+                <div class="progress-steps">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Personal Info</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Health Details</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Upload Photo</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Complete</div>
+                    </div>
+                </div>
+                
+                <!-- Step 1: Personal Information -->
+                <div class="form-section active" data-section="1">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Enter your last name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" placeholder="Enter your age" min="18" max="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn btn-outline" disabled>Back</button>
+                        <button class="btn btn-primary next-step">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Health Details -->
+                <div class="form-section" data-section="2">
+                    <div class="bmi-calculator">
+                        <h3>BMI Calculator</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="height">Height (cm)</label>
+                                <input type="number" id="height" placeholder="Enter height in cm">
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">Weight (kg)</label>
+                                <input type="number" id="weight" placeholder="Enter weight in kg">
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" id="calculate-bmi">Calculate BMI</button>
+                        <div class="bmi-result" id="bmi-result"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Do you smoke?</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <label style="display: flex; align-items: center;">
+                                <input type="radio" name="smoking" value="yes" style="margin-right: 0.5rem;"> Yes
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="radio" name="smoking" value="no" style="margin-right: 0.5rem;" checked> No
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity">Physical Activity Level</label>
+                        <select id="activity">
+                            <option value="">Select activity level</option>
+                            <option value="sedentary">Sedentary (little or no exercise)</option>
+                            <option value="light">Light (exercise 1-3 days/week)</option>
+                            <option value="moderate">Moderate (exercise 3-5 days/week)</option>
+                            <option value="active">Active (exercise 6-7 days/week)</option>
+                            <option value="very-active">Very Active (hard exercise 6-7 days/week)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn btn-outline prev-step">Back</button>
+                        <button class="btn btn-primary next-step">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Upload Photo -->
+                <div class="form-section" data-section="3">
+                    <div class="form-group">
+                        <label>Upload Your Photo</label>
+                        <div class="image-upload" id="image-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload your photo</p>
+                            <input type="file" id="profile-image" accept="image/*" style="display: none;">
+                        </div>
+                        <div class="image-preview" id="image-preview">
+                            <img id="preview-image" src="#" alt="Preview">
+                            <button class="btn btn-outline" id="change-image" style="margin-top: 1rem;">Change Image</button>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="btn btn-outline prev-step">Back</button>
+                        <button class="btn btn-primary next-step">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Complete -->
+                <div class="form-section" data-section="4">
+                    <div class="profile-complete">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Profile Completed!</h3>
+                        <p>Your profile has been successfully created. Now you can get your personalized heart attack risk prediction and health recommendations.</p>
+                        <button class="btn btn-primary" id="view-profile">View Your Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const steps = document.querySelectorAll('.step');
+        const formSections = document.querySelectorAll('.form-section');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        const progressBar = document.querySelector('.progress-bar');
+        const calculateBmiBtn = document.getElementById('calculate-bmi');
+        const bmiResult = document.getElementById('bmi-result');
+        const imageUpload = document.getElementById('image-upload');
+        const profileImage = document.getElementById('profile-image');
+        const imagePreview = document.getElementById('image-preview');
+        const previewImage = document.getElementById('preview-image');
+        const changeImageBtn = document.getElementById('change-image');
+        const viewProfileBtn = document.getElementById('view-profile');
+        
+
+        // After all the profile creation logic...
+        document.getElementById('view-profile').addEventListener('click', function() {
+            // Collect all form data
+            const userData = {
+                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                bmi: document.getElementById('bmi-result').textContent,
+                smoking: document.querySelector('input[name="smoking"]:checked').value,
+                activity: document.getElementById('activity').value,
+                image: document.getElementById('preview-image').src || 'https://ui-avatars.com/api/?name=' + 
+                      encodeURIComponent(document.getElementById('firstName').value + '+' + document.getElementById('lastName').value)
+            };
+            
+            // Store data in sessionStorage to pass to profile page
+            sessionStorage.setItem('userProfileData', JSON.stringify(userData));
+            
+            // Redirect to profile page
+            window.location.href = 'userprofile.html';
+        });
+        // Current step
+        let currentStep = 1;
+        
+        // Next step function
+        function goToNextStep() {
+            if (currentStep < 4) {
+                // Validate current step before proceeding
+                if (validateStep(currentStep)) {
+                    steps[currentStep - 1].classList.remove('active');
+                    steps[currentStep - 1].classList.add('completed');
+                    steps[currentStep].classList.add('active');
+                    
+                    formSections[currentStep - 1].classList.remove('active');
+                    formSections[currentStep].classList.add('active');
+                    
+                    currentStep++;
+                    updateProgressBar();
+                }
+            }
+        }
+        
+        // Previous step function
+        function goToPrevStep() {
+            if (currentStep > 1) {
+                steps[currentStep - 1].classList.remove('active');
+                steps[currentStep - 2].classList.add('active');
+                steps[currentStep - 2].classList.remove('completed');
+                
+                formSections[currentStep - 1].classList.remove('active');
+                formSections[currentStep - 2].classList.add('active');
+                
+                currentStep--;
+                updateProgressBar();
+            }
+        }
+        
+        // Update progress bar
+        function updateProgressBar() {
+            const progressPercentage = ((currentStep - 1) / 3) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+        
+        // Validate step
+        function validateStep(step) {
+            if (step === 1) {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const age = document.getElementById('age').value;
+                const gender = document.getElementById('gender').value;
+                
+                if (!firstName || !lastName || !age || !gender) {
+                    alert('Please fill in all personal information fields');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            if (step === 2) {
+                const height = document.getElementById('height').value;
+                const weight = document.getElementById('weight').value;
+                const activity = document.getElementById('activity').value;
+                
+                if (!height || !weight || !activity) {
+                    alert('Please fill in all health details fields');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+        
+        // Calculate BMI
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value) / 100; // convert to meters
+            const weight = parseFloat(document.getElementById('weight').value);
+            
+            if (height && weight) {
+                const bmi = (weight / (height * height)).toFixed(1);
+                let bmiCategory = '';
+                let bmiClass = '';
+                
+                if (bmi < 18.5) {
+                    bmiCategory = 'Underweight';
+                    bmiClass = 'bmi-warning';
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    bmiCategory = 'Normal weight';
+                    bmiClass = 'bmi-normal';
+                } else if (bmi >= 25 && bmi < 30) {
+                    bmiCategory = 'Overweight';
+                    bmiClass = 'bmi-warning';
+                } else {
+                    bmiCategory = 'Obese';
+                    bmiClass = 'bmi-danger';
+                }
+                
+                bmiResult.textContent = `Your BMI: ${bmi} (${bmiCategory})`;
+                bmiResult.className = 'bmi-result ' + bmiClass;
+                bmiResult.style.display = 'block';
+            } else {
+                alert('Please enter both height and weight');
+            }
+        }
+        
+        // Image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    imageUpload.style.display = 'none';
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Change image
+        function changeImage() {
+            imageUpload.style.display = 'block';
+            imagePreview.style.display = 'none';
+            profileImage.value = '';
+        }
+        
+        // View profile (in a real app, this would save the data and redirect)
+        function viewProfile() {
+            // Collect all form data
+            const profileData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                smoking: document.querySelector('input[name="smoking"]:checked').value,
+                activity: document.getElementById('activity').value,
+                image: previewImage.src
+            };
+            
+            // In a real app, you would send this data to the server
+            console.log('Profile data:', profileData);
+            
+            // For demo purposes, we'll just show an alert
+            alert('Profile created successfully! In a real application, this would redirect to the user profile page.');
+            
+            // Redirect to a dashboard or prediction page
+            // window.location.href = "dashboard.html";
+        }
+        
+        // Event listeners
+        nextButtons.forEach(button => {
+            button.addEventListener('click', goToNextStep);
+        });
+        
+        prevButtons.forEach(button => {
+            button.addEventListener('click', goToPrevStep);
+        });
+        
+        calculateBmiBtn.addEventListener('click', calculateBMI);
+        
+        imageUpload.addEventListener('click', () => {
+            profileImage.click();
+        });
+        
+        profileImage.addEventListener('change', handleImageUpload);
+        
+        changeImageBtn.addEventListener('click', changeImage);
+        
+        viewProfileBtn.addEventListener('click', viewProfile);
+    </script>
+</body>
+</html>

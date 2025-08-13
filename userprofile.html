@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile | HeartGuard</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #ff6b81;
+            --dark: #2f3542;
+            --light: #f1f2f6;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .logo h1 {
+            color: var(--dark);
+            font-weight: 700;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            object-fit: cover;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary);
+            margin-right: 2rem;
+        }
+        
+        .profile-info h2 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            color: #57606f;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .detail-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #57606f;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .risk-assessment {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .risk-meter {
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to right, #2ed573, #ffa502, #ff4757);
+            border-radius: 15px;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .risk-indicator {
+            position: absolute;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid var(--dark);
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .risk-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            margin-top: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <h1>Heart<span>Guard</span></h1>
+        </div>
+        <div class="user-menu" id="userMenu">
+            <!-- Filled by JavaScript -->
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="profile-header" id="profileHeader">
+            <!-- Filled by JavaScript -->
+        </div>
+        
+        <div class="profile-details">
+            <div class="detail-card">
+                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <div id="personalInfo">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="detail-card">
+                <h3><i class="fas fa-heartbeat"></i> Health Metrics</h3>
+                <div id="healthMetrics">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="risk-assessment">
+            <h3><i class="fas fa-chart-line"></i> Heart Attack Risk Assessment</h3>
+            <p>Based on your profile information, your estimated risk is:</p>
+            
+            <div class="risk-meter">
+                <div class="risk-indicator" id="riskIndicator" style="left: 30%;"></div>
+            </div>
+            
+            <div class="risk-labels">
+                <span>Low</span>
+                <span>Medium</span>
+                <span>High</span>
+            </div>
+            
+            <p id="riskDescription">Moderate risk - We recommend regular checkups and lifestyle improvements</p>
+            
+            <button class="btn btn-primary">Get Detailed Report</button>
+        </div>
+    </div>
+
+    <script>
+        // Get user data from session storage
+        const userData = JSON.parse(sessionStorage.getItem('userProfileData'));
+        
+        // Populate profile header
+        document.getElementById('profileHeader').innerHTML = `
+            <img src="${userData.image}" alt="Profile Picture" class="profile-pic">
+            <div class="profile-info">
+                <h2>${userData.name}</h2>
+                <p><i class="fas fa-birthday-cake"></i> ${userData.age} years old</p>
+                <p><i class="fas fa-${userData.gender === 'male' ? 'mars' : 'venus'}"></i> ${userData.gender.charAt(0).toUpperCase() + userData.gender.slice(1)}</p>
+            </div>
+        `;
+        
+        // Populate user menu
+        document.getElementById('userMenu').innerHTML = `
+            <img src="${userData.image}" alt="User">
+            <span>${userData.name.split(' ')[0]}</span>
+        `;
+        
+        // Populate personal info
+        document.getElementById('personalInfo').innerHTML = `
+            <div class="detail-item">
+                <span class="detail-label">Full Name</span>
+                <span class="detail-value">${userData.name}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Age</span>
+                <span class="detail-value">${userData.age}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Gender</span>
+                <span class="detail-value">${userData.gender.charAt(0).toUpperCase() + userData.gender.slice(1)}</span>
+            </div>
+        `;
+        
+        // Populate health metrics
+        document.getElementById('healthMetrics').innerHTML = `
+            <div class="detail-item">
+                <span class="detail-label">BMI</span>
+                <span class="detail-value">${userData.bmi || 'Not calculated'}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Smoking Status</span>
+                <span class="detail-value">${userData.smoking === 'yes' ? 'Smoker' : 'Non-smoker'}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Activity Level</span>
+                <span class="detail-value">${userData.activity}</span>
+            </div>
+        `;
+        
+        // Simple risk calculation (in a real app, this would use a proper algorithm)
+        function calculateRisk(userData) {
+            let risk = 20; // Base risk
+            
+            // Age factor
+            risk += (userData.age - 30) * 0.5;
+            
+            // BMI factor (assuming BMI is in format "Your BMI: 22.5 (Normal weight)")
+            const bmiMatch = userData.bmi?.match(/Your BMI: (\d+\.?\d*)/);
+            if (bmiMatch) {
+                const bmi = parseFloat(bmiMatch[1]);
+                if (bmi > 25) risk += (bmi - 25) * 2;
+            }
+            
+            // Smoking factor
+            if (userData.smoking === 'yes') risk += 15;
+            
+            // Activity level factor
+            if (userData.activity.includes('Sedentary')) risk += 10;
+            if (userData.activity.includes('Very Active')) risk -= 5;
+            
+            // Cap between 5-95%
+            risk = Math.max(5, Math.min(95, risk));
+            
+            return risk;
+        }
+        
+        // Set risk indicator
+        const riskPercentage = calculateRisk(userData);
+        document.getElementById('riskIndicator').style.left = `${riskPercentage}%`;
+        
+        // Set risk description
+        const riskDesc = document.getElementById('riskDescription');
+        if (riskPercentage < 30) {
+            riskDesc.textContent = "Low risk - Keep up the good work!";
+        } else if (riskPercentage < 60) {
+            riskDesc.textContent = "Moderate risk - We recommend regular checkups and lifestyle improvements";
+        } else {
+            riskDesc.textContent = "High risk - Please consult with a healthcare professional";
+        }
+    </script>
+</body>
+</html>
